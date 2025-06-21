@@ -7,7 +7,7 @@ from .models import CustomUser
 class SignUpAPIView(APIView):
     def get(self, request):
         users = CustomUser.objects.all()
-        serializer = SignUp(users, many=True)
+        serializer = SignUp(users, many=True)  # many = True because query has multiple items
         return response.Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):

@@ -3,4 +3,5 @@ from .views import SignUpAPIView
 
 urlpatterns = [   
     path('',SignUpAPIView.as_view()),
+    
 ]
