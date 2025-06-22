@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BlogPost
+from .models import BlogPost , Comments
 from django.utils.text import slugify
 class BlogPostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +26,22 @@ class BlogPostSerializer(serializers.ModelSerializer):
         newBlog.save()
         return newBlog
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comments
+        fields = '__all__'
+        read_only_fields = ['author','post']
+
+    def create(self , validated_data):
+        user = self.context['request'].user ## to get the author of the comment
+        post = self.context['post']
+        #setting the author and post of comment
+        new_comment = Comments(**validated_data)
+        new_comment.author = user
+        new_comment.post = post
+
+        new_comment.save()
+        return new_comment
 
 
 

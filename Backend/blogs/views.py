@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import BlogPost
+from .models import BlogPost , Comments
 from rest_framework.views import APIView
 from rest_framework import response , status
-from .serializer import BlogPostSerializer
+from .serializer import BlogPostSerializer , CommentSerializer
 from django.shortcuts import get_object_or_404
 
 class BlogPostAPIView(APIView):
@@ -26,3 +26,19 @@ class DetailBlogAPIView(APIView):
         blog.save(update_fields=["views"])
         serializer = BlogPostSerializer(blog)
         return response.Response(serializer.data)
+
+class CommentsAPIView(APIView):
+    def get(self, request , slug):
+        post = get_object_or_404(BlogPost, slug = slug)
+        comments = Comments.objects.filter(post = post)
+        serializer = CommentSerializer(comments,many = True)
+        return response.Response(serializer.data)
+    
+    def post(self, request ,slug):
+        post = get_object_or_404(BlogPost, slug = slug)
+        serializer = CommentSerializer(data = request.data, context = {'request':request, 'post':post})
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response({"message": "User created successfully"})
+        return response.Response(serializer.errors)
+

@@ -11,16 +11,11 @@ class BlogPost(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     views = models.IntegerField()
 
-    # save method of Models :-
-    # def save(self,*args, **kwargs):   # Logic for creating a unique slug
-    #     if not self.slug:
-    #         base_slug = slugify(self.title)
-    #         slug = base_slug
-    #         num = 1
-    #         while BlogPost.objects.filter(slug = slug).exists():
-    #             slug = f"{base_slug}-{num}"
-    #             num+=1
-    #         self.slug = slug
-    #     super().save(*args, **kwargs)
+class Comments(models.Model):
+    post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='comments') # auto select
+    comment = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) # auto select
 
+    
 
