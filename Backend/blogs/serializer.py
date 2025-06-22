@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import BlogPost , Comments
+from .models import BlogPost , Comments , Likes
 from django.utils.text import slugify
+from rest_framework.response import Response
 class BlogPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
@@ -42,6 +43,25 @@ class CommentSerializer(serializers.ModelSerializer):
 
         new_comment.save()
         return new_comment
+    
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Likes
+        fields = "__all__"
+        read_only_fields = ['author' , 'post']
+    def create(self , validated_data):
+        user = self.context['request'].user ## to get the author of the comment
+        post = self.context['post']
+        if Likes.objects.filter(post=post, author=user).exists():
+            return Response({'detail': 'Already liked'}, status=400)
+        #setting the author and post of comment
+        newLike = Likes(**validated_data)
+
+        newLike.author = user
+        newLike.post = post
+
+        newLike.save()
+        return newLike
 
 
 

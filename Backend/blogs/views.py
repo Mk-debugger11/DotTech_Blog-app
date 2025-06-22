@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import BlogPost , Comments
 from rest_framework.views import APIView
 from rest_framework import response , status
-from .serializer import BlogPostSerializer , CommentSerializer
+from .serializer import BlogPostSerializer , CommentSerializer , LikeSerializer
 from django.shortcuts import get_object_or_404
 
 class BlogPostAPIView(APIView):
@@ -41,4 +41,14 @@ class CommentsAPIView(APIView):
             serializer.save()
             return response.Response({"message": "User created successfully"})
         return response.Response(serializer.errors)
+    
+class LikeAPIView(APIView):
+    def post(self,request,slug):
+        post = get_object_or_404(BlogPost, slug = slug)
+        serializer = LikeSerializer(data = request.data, context = {'request':request, 'post':post})
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response({'message':'Post Like Successfully'})
+        return response.Response(serializer.errors)
+
 
