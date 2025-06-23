@@ -11,7 +11,7 @@ class BlogPost(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     views = models.IntegerField()
     def __str__(self):
-        return self.title
+        return self.slug
 
 class Comments(models.Model):
     post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='comments') # auto select
@@ -19,7 +19,7 @@ class Comments(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) # auto select
     def __str__(self):
-        return self.__class__
+        return self.comment
 
 class Likes(models.Model):
     post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='likes') # auto select
@@ -28,5 +28,12 @@ class Likes(models.Model):
 
     class Meta:
         unique_together = ('post', 'author')
-    
+
+class BookMark(models.Model):
+    post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='bookmark') # auto select
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) # auto select
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('post', 'author')
 
