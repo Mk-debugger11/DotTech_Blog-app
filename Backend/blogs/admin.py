@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import BlogPost , Comments , Likes
+from .models import BlogPost , Comments , Likes , Category
 
 class CommentInline(admin.TabularInline): # this class is saying that comments should be displayed in tabular form
     model = Comments
@@ -15,3 +15,4 @@ class BlogAdmin(admin.ModelAdmin): # this is modifying the blogpost admin page a
 admin.site.register(BlogPost , BlogAdmin)
 admin.site.register(Comments)
 admin.site.register(Likes)
+admin.site.register(Category)

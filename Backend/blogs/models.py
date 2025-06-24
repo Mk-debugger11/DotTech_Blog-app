@@ -2,11 +2,18 @@ from django.db import models
 # from users.models import CustomUser use the user model directly from settings
 from django.utils.text import slugify
 from django.conf import settings
+
+class Category(models.Model):
+    name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+    
 class BlogPost(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     slug = models.SlugField(blank=True,db_default='BlogPost')
     title = models.CharField(max_length=50)
     content = models.TextField()
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True , null = True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     views = models.IntegerField()

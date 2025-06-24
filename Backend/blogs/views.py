@@ -2,13 +2,34 @@ from django.shortcuts import render
 from .models import BlogPost , Comments
 from rest_framework.views import APIView
 from rest_framework import response , status
-from .serializer import BlogPostSerializer , CommentSerializer , LikeSerializer ,  BookMarkSerializer
+from .serializer import BlogPostSerializer , CommentSerializer , LikeSerializer ,  BookMarkSerializer ,LoginSerializer
 from django.shortcuts import get_object_or_404
+from .filters import ProductFilter
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+#jwt view
+class LoginAPI(APIView):
+    def post(self,request):
+        data = request.data
+        serializer = LoginSerializer(data=data)
+        if serializer.is_valid():
+            email = serializer.data['email']
+            password = serializer.data['password']
+            user = authenticate(email = email , password = password)
+            if user is None:
+                return response.Response({'error: User Not Found'})
+        refresh = RefreshToken.for_user(user)
+        return response.Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        })
+        
 
 class BlogPostAPIView(APIView):
     def get(self,request):
         posts = BlogPost.objects.all()
-        serializer = BlogPostSerializer(posts,many = True)
+        filtered_query = ProductFilter(request.GET , queryset = posts).qs
+        serializer = BlogPostSerializer(filtered_query,many = True)
         return response.Response(serializer.data)
     
     def post(self,request):

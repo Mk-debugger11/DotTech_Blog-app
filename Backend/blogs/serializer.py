@@ -82,3 +82,7 @@ class BookMarkSerializer(serializers.ModelSerializer):
         newBookMark.save()
         return newBookMark
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
