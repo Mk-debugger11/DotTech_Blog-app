@@ -33,6 +33,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 INSTALLED_APPS = [
     'rest_framework',
     'django_filters', # filtering using third party library django-filter
+    'corsheaders',
     'rest_framework_simplejwt', #jwt authentication
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,10 +44,13 @@ INSTALLED_APPS = [
     'blogs',
     'users',
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

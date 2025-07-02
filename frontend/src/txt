@@ -1,0 +1,6 @@
+External dependencies
+1. tailwind css
+2. lucide-react
+3. zustand
+4. react-router-dom
+5. shadcn-ui
