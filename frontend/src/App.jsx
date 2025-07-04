@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={isAuthenticated ? <LoggedInHomePage /> : <NewUserLandingPage />}/>
+        <Route path='/*' element={isAuthenticated ? <LoggedInHomePage /> : <NewUserLandingPage />}/>
       </Routes>
       
     </>

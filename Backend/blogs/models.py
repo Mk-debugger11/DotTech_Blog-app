@@ -16,7 +16,7 @@ class BlogPost(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True , null = True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-    views = models.IntegerField()
+    views = models.IntegerField(default=0)
     def __str__(self):
         return self.slug
 

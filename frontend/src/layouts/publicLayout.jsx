@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import SignIn from '../components/modals/signin';
-import useAuthStore from '../store/store';
 function NewUserLandingPage() {
     const [isOpen , setIsOpen] = useState(false)
     return (

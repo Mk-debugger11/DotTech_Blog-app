@@ -1,12 +1,21 @@
 from rest_framework import serializers
 from .models import BlogPost , Comments , Likes , BookMark
+from users.models import CustomUser
 from django.utils.text import slugify
 from rest_framework.response import Response
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id' , 'name')
+
 class BlogPostSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    # created_at = serializers.DateTimeField(format="%d %b %Y")
     class Meta:
         model = BlogPost
         fields = '__all__'
-        read_only_fields = ('author','slug')
+        read_only_fields = ('author','slug','views')
     
     def create(self,validated_data): # we have to pass the request as a context to the serializer
         user = self.context['request'].user # simple dictionary method
