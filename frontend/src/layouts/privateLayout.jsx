@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/home'
 import BlogDetail from '../pages/blogDetail'
 import BlogPostForm from '../pages/newBlog'
+import MyProfile from '../pages/myProfile'
 function LoggedInHomePage() {
   return (
     <>
@@ -15,6 +16,7 @@ function LoggedInHomePage() {
           <Route path='/' element={<Home />} />
           <Route path='/:slug' element={<BlogDetail />}/>
           <Route path='/newblog' element={<BlogPostForm />}/>
+          <Route path ='/myProfile' element={ <MyProfile/> }/>
         </Routes>
       </div>
     </>

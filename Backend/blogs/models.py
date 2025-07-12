@@ -30,7 +30,7 @@ class Comments(models.Model):
 
 class Likes(models.Model):
     post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='likes') # auto select
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) # auto select
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='likes') # auto select
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

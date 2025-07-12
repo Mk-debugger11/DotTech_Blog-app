@@ -18,8 +18,8 @@ async function FetchWithAuth(url, options = {}) {
         })
         if (refreshRes.ok) {
             const data = await refreshRes.json()
+            console.log("token refreshed")
             setJwt({ access: data.access , refresh: refresh })
-
             response = await fetch(url, {
                 ...options,
                 headers: {
@@ -27,7 +27,9 @@ async function FetchWithAuth(url, options = {}) {
                     Authorization: `Bearer ${data.access}`
                 },
             })
+            return response
         } else {
+            console.log("token reset")
             setJwt(null)
         }
 

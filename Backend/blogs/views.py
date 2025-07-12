@@ -36,7 +36,7 @@ class BlogPostAPIView(APIView):
         serializer = BlogPostSerializer(data = request.data, context={'request':request})
         if serializer.is_valid():
             serializer.save()  # the create method defined in the serializer is called
-            return response.Response({"message": "User created successfully"})
+            return response.Response({"message": "Blog created successfully"})
         return response.Response(serializer.errors)
 
     # def post(self,request):

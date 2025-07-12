@@ -54,6 +54,7 @@ class CommentSerializer(serializers.ModelSerializer):
         return new_comment
     
 class LikeSerializer(serializers.ModelSerializer):
+    post = BlogPostSerializer(read_only = True)
     class Meta:
         model = Likes
         fields = "__all__"

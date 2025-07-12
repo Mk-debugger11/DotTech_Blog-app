@@ -24,7 +24,10 @@ function Home() {
             <div className='h-[100%] border border-black flex'>
                 <div className='left-panel border border-black w-[75%]'>
                     {blogs.map((ele)=>{
-                        return <BlogCard author={ele.author.name} slug={ele.slug} title = {ele.title} content = {ele.content} createdAt = {ele.created_at}/>
+                        const rawDate = ele.created_at
+                        const date = new Date(rawDate)
+                        const formatedDate = date.toLocaleDateString()
+                        return <BlogCard key={ele.slug} author={ele.author.name} slug={ele.slug} title = {ele.title} content = {ele.content} createdAt = {formatedDate}/>
                     })}
                 </div>
                 <div className='right-panel border border-black'>

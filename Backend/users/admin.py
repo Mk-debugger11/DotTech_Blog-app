@@ -1,15 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from blogs.models import BookMark
+from blogs.models import BookMark , Likes
 from .models import CustomUser
 from .forms import CustomUserChangeForm , CustomUserCreationForm
 
 class BookMarkInline(admin.TabularInline):
     model = BookMark
     extra = 1
-
+class LikeInline(admin.TabularInline):
+    model = Likes
+    extra = 1
 class UserAdmin(admin.ModelAdmin):
-    inlines = [BookMarkInline]
+    inlines = [BookMarkInline , LikeInline]
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
