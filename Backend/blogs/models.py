@@ -9,11 +9,11 @@ class Category(models.Model):
         return self.name
     
 class BlogPost(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="UserPost")
     slug = models.SlugField(blank=True,db_default='BlogPost')
     title = models.CharField(max_length=50)
     content = models.TextField()
-    category = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True , null = True)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True , null = True,related_name="category")
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     views = models.IntegerField(default=0)
@@ -38,7 +38,7 @@ class Likes(models.Model):
 
 class BookMark(models.Model):
     post = models.ForeignKey(BlogPost,on_delete=models.CASCADE ,related_name='bookmark') # auto select
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) # auto select
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='bookmark') # auto select
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

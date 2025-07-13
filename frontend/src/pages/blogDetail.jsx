@@ -2,18 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 function BlogDetail() {
     const { slug } = useParams()
-    const [blog , setBlogData] = useState(null)
+    const [blog , setBlogData] = useState([])
+    const [comments , setComments] = useState([])
     function fetchBlogs(){
         fetch(`http://127.0.0.1:8000/blogs/${slug}`)
         .then((response)=>{
             return response.json()
         })
         .then((data)=>{
+            console.log(data)
             setBlogData(data)
         })
     }
+    function fetchComments(){
+      fetch(`http://127.0.0.1:8000/blogs/${slug}/comments/`)
+      .then((response)=>{
+          return response.json()
+      })
+      .then((data)=>{
+          console.log(data)
+          setComments(data)
+      })
+  }
     useEffect(()=>{
         fetchBlogs()
+        fetchComments()
     },[])
     if (!blog) {
         return <p className="p-4 text-center text-gray-600">Loading...</p>;
@@ -28,7 +41,7 @@ function BlogDetail() {
         <span>👤 {blog.author?.name || "Unknown Author"}</span>
         <span>📅 {blog.created_at}</span>
         <span>👁️ {blog.views} views</span>
-        {blog.category && <span>🏷️ Category ID: {blog.category}</span>}
+        {blog.category && <span>🏷️ Category: {blog.category.name}</span>}
       </div>
 
       {/* Blog content */}

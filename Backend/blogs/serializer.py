@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BlogPost , Comments , Likes , BookMark
+from .models import BlogPost , Comments , Likes , BookMark , Category
 from users.models import CustomUser
 from django.utils.text import slugify
 from rest_framework.response import Response
@@ -8,9 +8,13 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id' , 'name')
-
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
 class BlogPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
+    category = CategorySerializer(read_only = True)
     # created_at = serializers.DateTimeField(format="%d %b %Y")
     class Meta:
         model = BlogPost
@@ -39,7 +43,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = '__all__'
+        fields = ["author" , "comment" , "created_at"]
         read_only_fields = ['author','post']
 
     def create(self , validated_data):
