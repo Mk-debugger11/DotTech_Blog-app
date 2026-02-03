@@ -98,9 +98,9 @@ const Sidebar = () => {
           <input 
             type="email" 
             placeholder="Your email address" 
-            className="border border-border bg-white rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-accent-green focus:ring-1 focus:ring-accent-green"
+            className="border border-border bg-background text-foreground rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-accent-green focus:ring-1 focus:ring-accent-green"
           />
-          <button className="bg-foreground text-white font-medium text-sm py-2 rounded-lg hover:bg-gray-800 transition-colors">
+          <button className="bg-foreground text-background font-medium text-sm py-2 rounded-lg hover:opacity-90 transition-opacity">
             Subscribe
           </button>
         </div>

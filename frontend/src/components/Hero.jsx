@@ -28,7 +28,7 @@ const Hero = () => {
             </Link>
             <a 
               href="#feed" 
-              className="bg-white border border-border hover:bg-surface text-foreground font-medium py-3 px-6 rounded-full transition-colors"
+              className="bg-background border border-border hover:bg-surface text-foreground font-medium py-3 px-6 rounded-full transition-colors"
             >
               Explore Stories
             </a>
@@ -46,13 +46,13 @@ const Hero = () => {
           <div className="absolute bottom-10 left-10 w-40 h-40 bg-blue-400 opacity-20 rounded-full blur-xl"></div>
           
           <div className="relative z-10 grid grid-cols-2 gap-4">
-            <div className="w-24 h-32 border-2 border-foreground rounded-t-full bg-white shadow-sm flex items-center justify-center">
-              <span className="font-serif text-4xl">A</span>
+            <div className="w-24 h-32 border-2 border-foreground rounded-t-full bg-background shadow-sm flex items-center justify-center">
+              <span className="font-serif text-4xl text-foreground">A</span>
             </div>
             <div className="w-24 h-32 bg-accent-green rounded-b-full flex items-center justify-center text-white shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </div>
-            <div className="w-24 h-24 bg-foreground rounded-full flex items-center justify-center text-white shadow-sm">
+            <div className="w-24 h-24 bg-foreground rounded-full flex items-center justify-center text-background shadow-sm">
               <span className="font-serif text-3xl font-bold">"</span>
             </div>
             <div className="w-24 h-24 border-2 border-border rounded-xl flex items-center justify-center bg-surface">

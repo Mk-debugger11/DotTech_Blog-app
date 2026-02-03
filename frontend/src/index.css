@@ -9,10 +9,10 @@
 @theme inline {
   --font-sans: "Inter", sans-serif;
   --font-serif: "Playfair Display", serif;
-  --color-accent-green: #1A8917;
-  --color-surface: #F9F9F9;
-  --color-secondary-text: #6B6B6B;
-  --color-border: #E6E6E6;
+  --color-accent-green: var(--accent-green);
+  --color-surface: var(--surface);
+  --color-secondary-text: var(--secondary-text);
+  --color-border: var(--border);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -67,6 +67,9 @@
   --accent-foreground: #242424;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #E6E6E6;
+  --surface: #F9F9F9;
+  --secondary-text: #6B6B6B;
+  --accent-green: #1A8917;
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -101,6 +104,9 @@
   --accent-foreground: #E0E0E0;
   --destructive: oklch(0.704 0.191 22.216);
   --border: #333333;
+  --surface: #1E1E1E;
+  --secondary-text: #A0A0A0;
+  --accent-green: #1A8917;
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
