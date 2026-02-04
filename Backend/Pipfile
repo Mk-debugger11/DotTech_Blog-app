@@ -10,6 +10,10 @@ pillow = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
+python-dotenv = "*"
+faker = "*"
 
 [dev-packages]
 
