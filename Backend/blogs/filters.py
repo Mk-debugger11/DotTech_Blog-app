@@ -4,6 +4,6 @@ class ProductFilter(django_filters.FilterSet):
     class Meta:
         model = BlogPost
         fields = {
-            'category__name': ['iexact'],
+            'categories__name': ['iexact'],
             'title' : ['icontains']
         }
