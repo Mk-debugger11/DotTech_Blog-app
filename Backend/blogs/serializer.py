@@ -14,37 +14,96 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 class BlogPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
-    category = CategorySerializer(read_only = True)
-    # created_at = serializers.DateTimeField(format="%d %b %Y")
+    likes_count = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
+    bookmarks_count = serializers.SerializerMethodField()
+    is_liked_by_user = serializers.SerializerMethodField()
+    is_bookmarked_by_user = serializers.SerializerMethodField()
+    categories = CategorySerializer(many=True, read_only=True)
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.filter(is_active=True), 
+        source='categories', 
+        write_only=True, 
+        required=False,
+        many=True
+    )
+
     class Meta:
         model = BlogPost
         fields = '__all__'
-        read_only_fields = ('author','slug','views')
+        read_only_fields = ('author','slug','views', 'shares')
     
-    def create(self,validated_data): # we have to pass the request as a context to the serializer
-        user = self.context['request'].user # simple dictionary method
-        title = validated_data.get('title')
+    def get_likes_count(self, obj):
+        if hasattr(obj, 'likes_c'):
+            return obj.likes_c
+        return Likes.objects.filter(post=obj).count()
 
-        newBlog = BlogPost(**validated_data)  # ** converts the dictionary into key-value pairs
+    def get_comments_count(self, obj):
+        if hasattr(obj, 'comments_c'):
+            return obj.comments_c
+        return Comments.objects.filter(post=obj).count()
+
+    def get_bookmarks_count(self, obj):
+        if hasattr(obj, 'bookmarks_c'):
+            return obj.bookmarks_c
+        return BookMark.objects.filter(post=obj).count()
+
+    def get_is_liked_by_user(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return Likes.objects.filter(post=obj, author=request.user).exists()
+        return False
+
+    def get_is_bookmarked_by_user(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return BookMark.objects.filter(post=obj, author=request.user).exists()
+        return False
+    
+    def create(self,validated_data):
+        user = self.context['request'].user
+        title = validated_data.get('title')
+        categories = validated_data.pop('categories', [])
+
+        newBlog = BlogPost(**validated_data)
         newBlog.author = user
         # adding slug to the database
         base_slug = slugify(title)
         slug = base_slug
         num = 1
-        while BlogPost.objects.filter(slug = slug).exists():
-            slug = f"{base_slug}-{num}"
-            num+=1
+        while BlogPost.objects.filter(slug=slug).exists():
+            slug = f'{base_slug}-{num}'
+            num += 1
+            
         newBlog.slug = slug
-        
         # saving the blog
         newBlog.save()
+        
+        if categories:
+            newBlog.categories.set(categories)
+            
         return newBlog
 
+    def update(self, instance, validated_data):
+        categories = validated_data.pop('categories', None)
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+            
+        instance.save()
+        
+        if categories is not None:
+            instance.categories.set(categories)
+            
+        return instance
+
 class CommentSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    
     class Meta:
         model = Comments
-        fields = ["author" , "comment" , "created_at"]
-        read_only_fields = ['author','post']
+        fields = ["id", "author" , "comment" , "created_at"]
+        read_only_fields = ['id', 'author','post']
 
     def create(self , validated_data):
         user = self.context['request'].user ## to get the author of the comment
