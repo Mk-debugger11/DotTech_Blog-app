@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),    
     path('users/',include('users.urls')),
     path('blogs/',include('blogs.urls')),
-     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
