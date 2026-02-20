@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import TopWriters from './TopWriters';
 
 const Sidebar = () => {
-  const trendingStories = [
-    { id: '01', title: 'Why React 19 is a Game Changer', author: 'Dan Abramov', readTime: '5 min read' },
-    { id: '02', title: 'Building Scalable APIs with Django', author: 'Jane Doe', readTime: '8 min read' },
-    { id: '03', title: 'The Future of AI in Software Engineering', author: 'John Smith', readTime: '12 min read' },
-  ];
+  const [trendingStories, setTrendingStories] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const recommendedTopics = [
-    'React', 'Django', 'JavaScript', 'AI', 'Machine Learning', 'Startups', 'Web Development', 'Career'
-  ];
+  const fetchTrending = (pageNumber) => {
+      setIsLoading(true);
+      fetch(`http://127.0.0.1:8000/blogs/trending/?limit=3&page=${pageNumber}`)
+          .then(res => res.json())
+          .then(data => {
+              const results = data.results || data;
+              setTrendingStories(prev => pageNumber === 1 ? results : [...prev, ...results]);
+              setHasMore(!!data.next);
+              setIsLoading(false);
+          })
+          .catch(err => {
+              console.error(err);
+              setIsLoading(false);
+          });
+  };
 
-  const topWriters = [
-    { id: 1, name: 'Alice Walker', avatar: 'AW' },
-    { id: 2, name: 'Bob Singer', avatar: 'BS' },
-    { id: 3, name: 'Charlie Day', avatar: 'CD' },
-  ];
+  useEffect(() => {
+      fetchTrending(1);
+  }, []);
+
+  const handleLoadMore = () => {
+      if (!isLoading && hasMore) {
+          const nextPage = page + 1;
+          setPage(nextPage);
+          fetchTrending(nextPage);
+      }
+  };
+
 
   return (
-    <aside className="sticky top-24 space-y-10 pl-6 border-l border-border min-h-[calc(100vh-120px)]">
+    <aside className="lg:sticky lg:top-24 space-y-10 lg:pl-6 lg:border-l border-border lg:h-[calc(100vh-120px)] lg:overflow-y-auto lg:pb-12" style={{ scrollbarWidth: 'none' }}>
       
       {/* Trending Stories */}
       <div>
@@ -28,96 +48,71 @@ const Sidebar = () => {
           Trending on DotTech
         </h3>
         <div className="space-y-6">
-          {trendingStories.map((story) => (
-            <motion.div 
-              key={story.id} 
-              className="flex gap-4 group cursor-pointer"
-              whileHover={{ x: 4 }}
-            >
-              <span className="text-3xl font-bold text-border group-hover:text-secondary-text transition-colors">
-                {story.id}
-              </span>
-              <div>
-                <p className="text-sm text-foreground font-medium mb-1">
-                  <span className="inline-block w-4 h-4 bg-foreground rounded-full mr-2 align-middle"></span>
-                  {story.author}
-                </p>
-                <h4 className="font-bold text-foreground leading-tight group-hover:text-accent-green transition-colors">
-                  {story.title}
-                </h4>
-                <p className="text-xs text-secondary-text mt-1">{story.readTime}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+          {trendingStories.length > 0 ? trendingStories.map((story, index) => {
+            const rank = (index + 1).toString().padStart(2, '0');
+            const authorName = story.author?.name || 'Anonymous';
+            const wordCount = story.content ? story.content.split(' ').length : 0;
+            const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
-      {/* Recommended Topics */}
-      <div>
-        <h3 className="font-sans font-bold text-base mb-4 text-foreground">Recommended Topics</h3>
-        <div className="flex flex-wrap gap-2">
-          {recommendedTopics.map(topic => (
-            <span 
-              key={topic} 
-              className="bg-surface hover:bg-border text-foreground text-sm py-2 px-4 rounded-full cursor-pointer transition-colors"
-            >
-              {topic}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Top Writers */}
-      <div>
-        <h3 className="font-sans font-bold text-base mb-4 text-foreground">Top Writers</h3>
-        <div className="space-y-4">
-          {topWriters.map(writer => (
-            <div key={writer.id} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-border rounded-full flex items-center justify-center text-sm font-medium text-secondary-text">
-                  {writer.avatar}
-                </div>
+            return (
+              <motion.div 
+                key={story.slug} 
+                className="flex gap-4 group cursor-pointer"
+                whileHover={{ x: 4 }}
+              >
+                <span className="text-3xl font-bold text-border group-hover:text-secondary-text transition-colors">
+                  {rank}
+                </span>
                 <div>
-                  <p className="font-medium text-foreground text-sm">{writer.name}</p>
-                  <p className="text-xs text-secondary-text">Top writer in Tech</p>
+                  <Link to={`/user/${story.author?.id}`}>
+                    <p className="text-sm text-foreground font-medium mb-1 group-hover:opacity-80">
+                      <span className="inline-block w-4 h-4 rounded-full mr-2 align-middle overflow-hidden bg-border text-center text-[10px] leading-4">
+                        {story.author?.avatar ? (
+                          <img src={story.author.avatar.startsWith('http') ? story.author.avatar : `http://127.0.0.1:8000${story.author.avatar}`} alt={authorName} className="w-full h-full object-cover" />
+                        ) : authorName.charAt(0).toUpperCase()}
+                      </span>
+                      {authorName}
+                    </p>
+                  </Link>
+                  <Link to={`/${story.slug}`}>
+                    <h4 className="font-bold text-foreground leading-tight group-hover:text-accent-green transition-colors line-clamp-2">
+                      {story.title}
+                    </h4>
+                  </Link>
+                  <p className="text-xs text-secondary-text mt-1">{readTime} min read</p>
                 </div>
-              </div>
-              <button className="text-sm font-medium text-accent-green hover:text-green-800 transition-colors border border-accent-green rounded-full px-3 py-1 hover:bg-accent-green hover:text-white">
-                Follow
-              </button>
+              </motion.div>
+            );
+          }) : (
+            <div className="animate-pulse space-y-4">
+               {[1,2,3].map(i => (
+                 <div key={i} className="flex gap-4">
+                    <div className="w-8 h-8 bg-border rounded"></div>
+                    <div className="space-y-2 flex-1 pt-1">
+                      <div className="h-3 w-20 bg-border rounded"></div>
+                      <div className="h-4 w-full bg-border rounded"></div>
+                      <div className="h-3 w-16 bg-border rounded"></div>
+                    </div>
+                 </div>
+               ))}
             </div>
-          ))}
+          )}
         </div>
-      </div>
-
-      {/* Newsletter Card */}
-      <div className="bg-surface p-6 rounded-xl border border-border">
-        <h3 className="font-bold text-foreground mb-2">Stay in the loop</h3>
-        <p className="text-sm text-secondary-text mb-4">Get the latest tech stories delivered weekly.</p>
-        <div className="flex flex-col gap-3">
-          <input 
-            type="email" 
-            placeholder="Your email address" 
-            className="border border-border bg-background text-foreground rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-accent-green focus:ring-1 focus:ring-accent-green"
-          />
-          <button className="bg-foreground text-background font-medium text-sm py-2 rounded-lg hover:opacity-90 transition-opacity">
-            Subscribe
+        {hasMore && (
+          <button 
+            onClick={handleLoadMore} 
+            disabled={isLoading}
+            className="w-full mt-4 text-xs font-medium text-secondary-text hover:text-foreground transition-colors py-2 border border-border rounded-lg bg-surface hover:bg-border"
+          >
+            {isLoading ? 'Loading...' : 'Show More Trending'}
           </button>
-        </div>
+        )}
       </div>
 
-      {/* Footer Links (Medium style) */}
-      <div className="pt-4 border-t border-border flex flex-wrap gap-x-4 gap-y-2 text-xs text-secondary-text">
-        <span className="cursor-pointer hover:text-foreground">Help</span>
-        <span className="cursor-pointer hover:text-foreground">Status</span>
-        <span className="cursor-pointer hover:text-foreground">About</span>
-        <span className="cursor-pointer hover:text-foreground">Careers</span>
-        <span className="cursor-pointer hover:text-foreground">Press</span>
-        <span className="cursor-pointer hover:text-foreground">Blog</span>
-        <span className="cursor-pointer hover:text-foreground">Privacy</span>
-        <span className="cursor-pointer hover:text-foreground">Terms</span>
-        <span className="cursor-pointer hover:text-foreground">Text to speech</span>
-      </div>
+      <TopWriters />
+
+
+
     </aside>
   );
 };
