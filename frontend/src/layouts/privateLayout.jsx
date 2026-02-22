@@ -4,7 +4,8 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/home'
 import BlogDetail from '../pages/blogDetail'
 import BlogPostForm from '../pages/newBlog'
-import MyProfile from '../pages/myProfile'
+import Profile from '../pages/profile'
+import CategoryFeed from '../pages/category'
 function LoggedInHomePage() {
   return (
     <>
@@ -14,9 +15,10 @@ function LoggedInHomePage() {
       <div className="pt-17"> {/* Adjust pt-16 to navbar height */}
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/:slug' element={<BlogDetail />}/>
           <Route path='/newblog' element={<BlogPostForm />}/>
-          <Route path ='/myProfile' element={ <MyProfile/> }/>
+          <Route path='/user/:id' element={<Profile />} />
+          <Route path='/category/:slug' element={<CategoryFeed />}/>
+          <Route path='/:slug' element={<BlogDetail />}/>
         </Routes>
       </div>
     </>
