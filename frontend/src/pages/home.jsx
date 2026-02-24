@@ -1,32 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PenTool } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import BlogCard from '../components/blogCard';
 import Hero from '../components/Hero';
 import Sidebar from '../components/Sidebar';
 
 function Home() {
+    const location = useLocation();
     const [blogs, setBlogs] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-    function fetchBlogs() {
-        setIsLoading(true);
-        fetch('http://127.0.0.1:8000/blogs/')
+    function fetchBlogs(pageNumber = 1, reset = false) {
+        if (!hasMore && !reset) return;
+        
+        const searchParams = new URLSearchParams(location.search);
+        const searchQuery = searchParams.get('search');
+        const url = searchQuery 
+            ? `http://127.0.0.1:8000/blogs/?search=${encodeURIComponent(searchQuery)}&page=${pageNumber}` 
+            : `http://127.0.0.1:8000/blogs/?page=${pageNumber}`;
+        
+        if (reset) {
+            setIsLoading(true);
+        } else {
+            setIsFetchingMore(true);
+        }
+
+        fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setBlogs(data);
+                // Determine if we're using DRF pagination (data.results) or old format (array)
+                const results = data.results || data;
+                
+                if (reset) {
+                    setBlogs(results);
+                } else {
+                    setBlogs(prev => [...prev, ...results]);
+                }
+                
+                // If it's DRF paginated, 'next' tells us if there's more. If old format, assume no more.
+                setHasMore(!!data.next);
+                
                 setIsLoading(false);
+                setIsFetchingMore(false);
             })
             .catch((err) => {
                 console.error("Failed to fetch blogs:", err);
                 setIsLoading(false);
+                setIsFetchingMore(false);
             });
     }
 
     useEffect(() => {
-        fetchBlogs();
+        setPage(1);
+        setHasMore(true);
+        fetchBlogs(1, true);
+    }, [location.search]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200) {
+                if (!isLoading && !isFetchingMore && hasMore) {
+                    const nextPage = page + 1;
+                    setPage(nextPage);
+                    fetchBlogs(nextPage, false);
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoading, isFetchingMore, hasMore, page]);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/blogs/categories/')
+            .then(res => res.json())
+            .then(data => setCategories(data))
+            .catch(err => console.error("Failed to fetch categories:", err));
     }, []);
 
     const EmptyState = () => (
@@ -58,10 +112,33 @@ function Home() {
             <main id="feed" className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
                 <div className="flex flex-col lg:flex-row gap-12 relative">
                     
-                    {/* Left Column (Blog Feed) - 70% */}
-                    <div className="w-full lg:w-[70%]">
+                    {/* Left Column (Blog Feed) - 75% */}
+                    <div className="w-full lg:w-[75%]">
+                        
+                        {/* Category Explorer */}
+                        {!location.search && categories.length > 0 && (
+                            <div className="mb-10">
+                                <h2 className="text-sm font-bold uppercase tracking-wider text-secondary-text mb-4">Discover Topics</h2>
+                                <div className="flex flex-wrap gap-2">
+                                    {categories.map(cat => (
+                                        <Link 
+                                            key={cat.id} 
+                                            to={`/category/${cat.slug}`}
+                                            className="bg-surface border border-border text-foreground px-4 py-2 rounded-full text-sm hover:border-foreground transition-colors whitespace-nowrap"
+                                        >
+                                            {cat.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         <div className="flex items-center justify-between border-b border-border pb-4 mb-8">
-                            <h2 className="text-xl font-bold font-serif text-foreground">Latest Stories</h2>
+                            <h2 className="text-xl font-bold font-serif text-foreground">
+                                {new URLSearchParams(location.search).get('search') 
+                                    ? `Search Results for "${new URLSearchParams(location.search).get('search')}"`
+                                    : "Latest Stories"}
+                            </h2>
                         </div>
                         
                         {isLoading ? (
@@ -104,17 +181,29 @@ function Home() {
                                             content={ele.content} 
                                             createdAt={formattedDate}
                                             readTime={`${readTimeCalc} min read`}
-                                            likes={Math.floor(Math.random() * 100)} // Mock likes
-                                            comments={Math.floor(Math.random() * 20)} // Mock comments
+                                            likes={ele.likes_count || 0}
+                                            comments={ele.comments_count || 0}
+                                            categories={ele.categories || []}
+                                            thumbnail={ele.thumbnail}
                                         />
                                     );
                                 })}
                             </motion.div>
                         )}
+                        
+                        {isFetchingMore && (
+                            <div className="py-8 flex justify-center">
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-2 h-2 bg-accent-green rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                    <div className="w-2 h-2 bg-accent-green rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                    <div className="w-2 h-2 bg-accent-green rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     
-                    {/* Right Column (Sidebar) - 30% */}
-                    <div className="hidden lg:block lg:w-[30%]">
+                    {/* Right Column (Sidebar) */}
+                    <div className="w-full lg:w-[25%] mt-12 lg:mt-0">
                         <Sidebar />
                     </div>
                 </div>
