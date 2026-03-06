@@ -2,3 +2,5 @@
 Backend/.env
 __pycache__/
 *.pyc
+db.sqlite3
+Backend/db.sqlite3
