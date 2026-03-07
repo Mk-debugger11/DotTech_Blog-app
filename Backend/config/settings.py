@@ -58,8 +58,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
 if os.environ.get('FRONTEND_URL'):
-    CORS_ALLOWED_ORIGINS.append(os.environ.get('FRONTEND_URL'))
-    CSRF_TRUSTED_ORIGINS.append(os.environ.get('FRONTEND_URL'))
+    frontend_url = os.environ.get('FRONTEND_URL').rstrip('/')
+    CORS_ALLOWED_ORIGINS.append(frontend_url)
+    CSRF_TRUSTED_ORIGINS.append(frontend_url)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
