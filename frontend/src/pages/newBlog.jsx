@@ -154,13 +154,13 @@ const BlogPostForm = () => {
 
     useEffect(() => {
         // Fetch categories
-        fetch('http://127.0.0.1:8000/blogs/categories/')
+        fetch('https://dottech-blog-app.onrender.com/blogs/categories/')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(console.error);
 
         if (editSlug) {
-            FetchWithAuth(`http://127.0.0.1:8000/blogs/${editSlug}`)
+            FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${editSlug}`)
                 .then(res => {
                     if(!res.ok) throw new Error('Failed to fetch draft');
                     return res.json();
@@ -205,7 +205,7 @@ const BlogPostForm = () => {
             is_published: !asDraft
         };
 
-        const url = editSlug ? `http://127.0.0.1:8000/blogs/${editSlug}` : `http://127.0.0.1:8000/blogs/`;
+        const url = editSlug ? `https://dottech-blog-app.onrender.com/blogs/${editSlug}` : `https://dottech-blog-app.onrender.com/blogs/`;
         const method = editSlug ? 'PATCH' : 'POST';
 
         FetchWithAuth(url, {

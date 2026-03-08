@@ -33,7 +33,7 @@ function Navbar() {
     // Fetch user profile
     useEffect(() => {
         if (jwt?.access) {
-            fetch('http://127.0.0.1:8000/users/userProfile/', {
+            fetch('https://dottech-blog-app.onrender.com/users/userProfile/', {
                 headers: {
                     'Authorization': `Bearer ${jwt.access}`
                 }
@@ -48,7 +48,7 @@ function Navbar() {
         queryKey: ['search', debouncedSearch],
         queryFn: async () => {
             if (!debouncedSearch) return null;
-            const res = await fetch(`http://127.0.0.1:8000/blogs/search/?q=${encodeURIComponent(debouncedSearch)}`);
+            const res = await fetch(`https://dottech-blog-app.onrender.com/blogs/search/?q=${encodeURIComponent(debouncedSearch)}`);
             if (!res.ok) throw new Error('Search failed');
             return res.json();
         },

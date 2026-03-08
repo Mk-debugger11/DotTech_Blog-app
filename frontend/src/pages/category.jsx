@@ -24,7 +24,7 @@ function CategoryFeed() {
             setIsFetchingMore(true);
         }
 
-        fetch(`http://127.0.0.1:8000/blogs/?search=${slug}&page=${pageNumber}`)
+        fetch(`https://dottech-blog-app.onrender.com/blogs/?search=${slug}&page=${pageNumber}`)
             .then(response => response.json())
             .then(data => {
                 const results = data.results || data;
@@ -48,7 +48,7 @@ function CategoryFeed() {
 
     useEffect(() => {
         // Fetch Category Details
-        fetch(`http://127.0.0.1:8000/blogs/categories/${slug}/`)
+        fetch(`https://dottech-blog-app.onrender.com/blogs/categories/${slug}/`)
             .then(res => res.json())
             .then(data => setCategory(data))
             .catch(err => console.error("Failed to fetch category:", err));

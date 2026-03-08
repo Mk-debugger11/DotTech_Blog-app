@@ -17,7 +17,7 @@ async function FetchWithAuth(url, options = {}) {
         headers: headers,
     })
     if (response.status === 401 && jwt.refresh) {
-        const refreshRes = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+        const refreshRes = await fetch('https://dottech-blog-app.onrender.com/api/token/refresh/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ refresh: refresh }),

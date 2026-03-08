@@ -87,7 +87,7 @@ function Profile() {
 
     function fetchUserBlogs(pageNumber = 1) {
         if (pageNumber > 1) setIsFetchingMoreBlogs(true);
-        FetchWithAuth(`http://127.0.0.1:8000/users/${id}/blogs/?page=${pageNumber}`)
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/users/${id}/blogs/?page=${pageNumber}`)
             .then(res => res.json())
             .then(data => {
                 const results = data.results || data;
@@ -103,7 +103,7 @@ function Profile() {
 
     function fetchUserBookmarks(pageNumber = 1) {
         if (pageNumber > 1) setIsFetchingMoreBookmarks(true);
-        FetchWithAuth(`http://127.0.0.1:8000/users/${id}/bookmarks/?page=${pageNumber}`)
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/users/${id}/bookmarks/?page=${pageNumber}`)
             .then(res => res.json())
             .then(data => {
                 const results = data.results || data;
@@ -120,7 +120,7 @@ function Profile() {
     useEffect(() => {
         setIsLoading(true);
         // Fetch Profile
-        FetchWithAuth(`http://127.0.0.1:8000/users/${id}/profile/`)
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/users/${id}/profile/`)
             .then(res => res.json())
             .then(data => {
                 setProfile(data);
@@ -189,7 +189,7 @@ function Profile() {
             }
         });
 
-        FetchWithAuth('http://127.0.0.1:8000/users/userProfile/', {
+        FetchWithAuth('https://dottech-blog-app.onrender.com/users/userProfile/', {
             method: 'PATCH',
             body: formData
         })
@@ -219,7 +219,7 @@ function Profile() {
 
     const handleFollow = () => {
         setFollowLoading(true);
-        FetchWithAuth(`http://127.0.0.1:8000/users/${id}/follow/`, { method: 'POST' })
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/users/${id}/follow/`, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 setIsFollowing(data.is_following);
@@ -267,7 +267,7 @@ function Profile() {
                 <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-16 relative">
                     <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-accent-green flex-shrink-0 flex items-center justify-center text-white text-4xl font-serif font-bold overflow-hidden shadow-sm">
                         {profile.avatar ? (
-                            <img src={profile.avatar.startsWith('http') ? profile.avatar : `http://127.0.0.1:8000${profile.avatar}`} alt={profile.name} className="w-full h-full object-cover" />
+                            <img src={profile.avatar.startsWith('http') ? profile.avatar : `https://dottech-blog-app.onrender.com${profile.avatar}`} alt={profile.name} className="w-full h-full object-cover" />
                         ) : (
                             profile.name ? profile.name.charAt(0).toUpperCase() : 'A'
                         )}

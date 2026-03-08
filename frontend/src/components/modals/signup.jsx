@@ -31,7 +31,7 @@ function SignUp({ isOpen, setIsOpen, switchToSignIn }) {
 
         try {
             // Step 1: Create the User
-            const response = await fetch('http://127.0.0.1:8000/users/', {
+            const response = await fetch('https://dottech-blog-app.onrender.com/users/', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -51,7 +51,7 @@ function SignUp({ isOpen, setIsOpen, switchToSignIn }) {
                 password: password
             };
 
-            const loginResponse = await fetch('http://127.0.0.1:8000/blogs/login/', {
+            const loginResponse = await fetch('https://dottech-blog-app.onrender.com/blogs/login/', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(loginPayload)

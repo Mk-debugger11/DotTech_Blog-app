@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   const fetchTrending = (pageNumber) => {
       setIsLoading(true);
-      fetch(`http://127.0.0.1:8000/blogs/trending/?limit=3&page=${pageNumber}`)
+      fetch(`https://dottech-blog-app.onrender.com/blogs/trending/?limit=3&page=${pageNumber}`)
           .then(res => res.json())
           .then(data => {
               const results = data.results || data;
@@ -68,7 +68,7 @@ const Sidebar = () => {
                     <p className="text-sm text-foreground font-medium mb-1 group-hover:opacity-80">
                       <span className="inline-block w-4 h-4 rounded-full mr-2 align-middle overflow-hidden bg-border text-center text-[10px] leading-4">
                         {story.author?.avatar ? (
-                          <img src={story.author.avatar.startsWith('http') ? story.author.avatar : `http://127.0.0.1:8000${story.author.avatar}`} alt={authorName} className="w-full h-full object-cover" />
+                          <img src={story.author.avatar.startsWith('http') ? story.author.avatar : `https://dottech-blog-app.onrender.com${story.author.avatar}`} alt={authorName} className="w-full h-full object-cover" />
                         ) : authorName.charAt(0).toUpperCase()}
                       </span>
                       {authorName}

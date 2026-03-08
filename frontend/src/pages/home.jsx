@@ -21,8 +21,8 @@ function Home() {
         const searchParams = new URLSearchParams(location.search);
         const searchQuery = searchParams.get('search');
         const url = searchQuery 
-            ? `http://127.0.0.1:8000/blogs/?search=${encodeURIComponent(searchQuery)}&page=${pageNumber}` 
-            : `http://127.0.0.1:8000/blogs/?page=${pageNumber}`;
+            ? `https://dottech-blog-app.onrender.com/blogs/?search=${encodeURIComponent(searchQuery)}&page=${pageNumber}` 
+            : `https://dottech-blog-app.onrender.com/blogs/?page=${pageNumber}`;
         
         if (reset) {
             setIsLoading(true);
@@ -77,7 +77,7 @@ function Home() {
     }, [isLoading, isFetchingMore, hasMore, page]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/blogs/categories/')
+        fetch('https://dottech-blog-app.onrender.com/blogs/categories/')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error("Failed to fetch categories:", err));

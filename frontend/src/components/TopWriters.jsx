@@ -6,7 +6,7 @@ import FetchWithAuth from '../utils/fetchWithAuth';
 import useAuthStore from '../store/store';
 
 const fetchTopWriters = async ({ pageParam = 1 }) => {
-    const res = await FetchWithAuth(`http://127.0.0.1:8000/users/top-writers/?limit=5&page=${pageParam}`);
+    const res = await FetchWithAuth(`https://dottech-blog-app.onrender.com/users/top-writers/?limit=5&page=${pageParam}`);
     if (!res.ok) throw new Error('Failed to fetch top writers');
     return res.json();
 };
@@ -35,7 +35,7 @@ const TopWriters = () => {
 
     const followMutation = useMutation({
         mutationFn: async (userId) => {
-            const res = await FetchWithAuth(`http://127.0.0.1:8000/users/${userId}/follow/`, {
+            const res = await FetchWithAuth(`https://dottech-blog-app.onrender.com/users/${userId}/follow/`, {
                 method: 'POST',
                 body: JSON.stringify({})
             });
@@ -159,7 +159,7 @@ const TopWriters = () => {
                 {allWriters.map((writer) => {
                     const avatarUrl = writer.avatar?.startsWith('http') 
                         ? writer.avatar 
-                        : (writer.avatar ? `http://127.0.0.1:8000${writer.avatar}` : null);
+                        : (writer.avatar ? `https://dottech-blog-app.onrender.com${writer.avatar}` : null);
                         
                     return (
                         <motion.div 

@@ -19,7 +19,7 @@ function BlogDetail() {
 
     function fetchBlogs() {
         setIsLoading(true);
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}`)
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}`)
             .then((response) => {
                 if (!response.ok) throw new Error("Not found");
                 return response.json();
@@ -36,7 +36,7 @@ function BlogDetail() {
     }
 
     function trackView() {
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/view/`, { 
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/view/`, { 
             method: 'POST',
             body: JSON.stringify({})
         })
@@ -50,7 +50,7 @@ function BlogDetail() {
     }
 
     function fetchComments() {
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/comments/`)
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/comments/`)
             .then((response) => response.json())
             .then((data) => setComments(data))
             .catch((err) => console.error("Failed to fetch comments:", err));
@@ -67,7 +67,7 @@ function BlogDetail() {
             likes_count: wasLiked ? prev.likes_count - 1 : prev.likes_count + 1
         }));
 
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/like/`, { 
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/like/`, { 
             method: 'POST',
             body: JSON.stringify({})
         })
@@ -95,7 +95,7 @@ function BlogDetail() {
             bookmarks_count: wasBookmarked ? prev.bookmarks_count - 1 : prev.bookmarks_count + 1
         }));
 
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/bookmark/`, { 
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/bookmark/`, { 
             method: 'POST',
             body: JSON.stringify({})
         })
@@ -126,7 +126,7 @@ function BlogDetail() {
     };
 
     const recordShare = () => {
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/share/`, { 
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/share/`, { 
             method: 'POST',
             body: JSON.stringify({})
         })
@@ -140,7 +140,7 @@ function BlogDetail() {
         if (!newComment.trim()) return;
 
         setIsSubmittingComment(true);
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/${slug}/comments/`, {
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/comments/`, {
             method: 'POST',
             body: JSON.stringify({ comment: newComment })
         })
@@ -156,7 +156,7 @@ function BlogDetail() {
     const handleDeleteComment = (id) => {
         if (!window.confirm("Are you sure you want to delete this comment?")) return;
         
-        FetchWithAuth(`http://127.0.0.1:8000/blogs/comments/${id}/`, {
+        FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/comments/${id}/`, {
             method: 'DELETE'
         })
             .then(() => {

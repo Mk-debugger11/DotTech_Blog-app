@@ -28,7 +28,7 @@ function SignIn({ isOpen, setIsOpen, switchToSignUp }) {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/blogs/login/', {
+            const response = await fetch('https://dottech-blog-app.onrender.com/blogs/login/', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(credentials)
