@@ -558,13 +558,15 @@ function Profile() {
                             <button onClick={() => setIsEditModalOpen(false)} className="text-secondary-text hover:text-foreground">✕</button>
                         </div>
                         <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
+                            {/* 
                             <div>
                                 <label className="block text-sm font-medium text-foreground mb-1">Profile Picture (Avatar)</label>
                                 <input type="file" accept="image/*" onChange={handleFileChange} className="w-full text-sm text-secondary-text file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-surface file:text-foreground hover:file:bg-border transition-colors cursor-pointer" />
                                 {editForm.avatar && typeof editForm.avatar === 'object' && (
                                     <p className="text-xs text-accent-green mt-2">New image selected: {editForm.avatar.name}</p>
                                 )}
-                            </div>
+                            </div> 
+                            */}
                             <div>
                                 <label className="block text-sm font-medium text-foreground mb-1">Name</label>
                                 <input type="text" name="name" value={editForm.name} onChange={handleEditChange} className="w-full bg-surface border border-border rounded-lg px-4 py-2 text-foreground focus:outline-none focus:border-accent-green" />
