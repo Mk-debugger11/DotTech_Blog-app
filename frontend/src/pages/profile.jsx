@@ -266,11 +266,7 @@ function Profile() {
                 {/* Profile Header */}
                 <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-16 relative">
                     <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-accent-green flex-shrink-0 flex items-center justify-center text-white text-4xl font-serif font-bold overflow-hidden shadow-sm">
-                        {profile.avatar ? (
-                            <img src={profile.avatar.startsWith('http') ? profile.avatar : `https://dottech-blog-app.onrender.com${profile.avatar}`} alt={profile.name} className="w-full h-full object-cover" />
-                        ) : (
-                            profile.name ? profile.name.charAt(0).toUpperCase() : 'A'
-                        )}
+                        {profile.name ? profile.name.charAt(0).toUpperCase() : 'A'}
                     </div>
 
                     {/* Info */}
