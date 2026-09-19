@@ -105,7 +105,7 @@ const MenuBar = ({ editor }) => {
             
             <input
                 type="color"
-                onInput={(event) => editor.chain().focus().setColor(event.target.value).run()}
+                onInput={(event: any) => editor.chain().focus().setColor(event.target.value).run()}
                 value={editor.getAttributes('textStyle').color || '#000000'}
                 data-testid="setColor"
                 className="w-6 h-6 ml-2 cursor-pointer border-0 p-0 rounded overflow-hidden"

@@ -41,7 +41,7 @@ function Button({
   size,
   asChild = false,
   ...props
-}) {
+}: any) {
   const Comp = asChild ? Slot : "button"
 
   return (

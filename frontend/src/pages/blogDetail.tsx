@@ -290,7 +290,7 @@ function BlogDetail() {
                             src={blog.thumbnail} 
                             alt={blog.title} 
                             className="w-full h-auto object-cover max-h-[500px]"
-                            onError={(e) => { e.target.style.display = 'none'; }}
+                            onError={(e: any) => { e.target.style.display = 'none'; }}
                         />
                     </div>
                 )}
@@ -336,7 +336,7 @@ function BlogDetail() {
                                 onChange={(e) => setNewComment(e.target.value)}
                                 placeholder="What are your thoughts?" 
                                 className="w-full bg-transparent border-none focus:ring-0 resize-none text-foreground placeholder-secondary-text"
-                                rows="3"
+                                rows={3}
                             ></textarea>
                             <div className="flex justify-end mt-2">
                                 <button 

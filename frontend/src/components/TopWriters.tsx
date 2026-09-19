@@ -49,8 +49,8 @@ const TopWriters = () => {
             queryClient.setQueryData(['topWriters', page], (old) => {
                 if (!old) return old;
                 // Handle both object with results or direct array
-                const isPaginated = !!old.results;
-                const arr = isPaginated ? old.results : old;
+                const isPaginated = !!(old as any)?.results;
+                const arr = isPaginated ? (old as any).results : old;
                 
                 const updatedArr = arr.map(w => {
                     if (w.id === userId) {
@@ -78,7 +78,7 @@ const TopWriters = () => {
                 }));
                 
                 if (isPaginated) {
-                    return { ...old, results: updatedArr };
+                    return { ...(old as any), results: updatedArr };
                 }
                 return updatedArr;
             });

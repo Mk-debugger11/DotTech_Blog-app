@@ -569,7 +569,7 @@ function Profile() {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground mb-1">Bio</label>
-                                <textarea name="bio" value={editForm.bio} onChange={handleEditChange} rows="3" className="w-full bg-surface border border-border rounded-lg px-4 py-2 text-foreground focus:outline-none focus:border-accent-green resize-none"></textarea>
+                                <textarea name="bio" value={editForm.bio} onChange={handleEditChange} rows={3} className="w-full bg-surface border border-border rounded-lg px-4 py-2 text-foreground focus:outline-none focus:border-accent-green resize-none"></textarea>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground mb-1">Website URL</label>
