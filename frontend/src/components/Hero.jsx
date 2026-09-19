@@ -42,9 +42,8 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="hidden md:flex md:w-2/5 justify-center items-center relative h-64 mt-12 md:mt-0"
         >
-          <div className="absolute top-0 right-10 w-32 h-32 bg-accent-green opacity-20 rounded-full blur-xl"></div>
-          <div className="absolute bottom-10 left-10 w-40 h-40 bg-blue-400 opacity-20 rounded-full blur-xl"></div>
           
+
           <div className="relative z-10 grid grid-cols-2 gap-4">
             <div className="w-24 h-32 border-2 border-foreground rounded-t-full bg-background shadow-sm flex items-center justify-center">
               <span className="font-serif text-4xl text-foreground">A</span>
