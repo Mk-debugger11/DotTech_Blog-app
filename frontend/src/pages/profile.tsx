@@ -58,9 +58,9 @@ function Profile() {
     const currentUserId = jwt?.access ? JSON.parse(atob(jwt.access.split('.')[1])).user_id : null;
     const isOwner = currentUserId === parseInt(id);
 
-    const [profile, setProfile] = useState(null);
-    const [blogs, setBlogs] = useState([]);
-    const [bookmarks, setBookmarks] = useState([]);
+    const [profile, setProfile] = useState<any>(null);
+    const [blogs, setBlogs] = useState<any[]>([]);
+    const [bookmarks, setBookmarks] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     
     const [blogsPage, setBlogsPage] = useState(1);
@@ -76,7 +76,7 @@ function Profile() {
     
     // Edit Profile state
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editForm, setEditForm] = useState({ name: '', bio: '', website: '', github: '', linkedin: '', avatar: null });
+    const [editForm, setEditForm] = useState<any>({ name: '', bio: '', website: '', github: '', linkedin: '', avatar: null });
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {

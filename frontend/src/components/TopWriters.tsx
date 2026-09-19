@@ -17,7 +17,7 @@ const TopWriters = () => {
     const isAuthenticated = !!jwt;
 
     const [page, setPage] = useState(1);
-    const [allWriters, setAllWriters] = useState([]);
+    const [allWriters, setAllWriters] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState(true);
 
     const { data: responseData, isLoading, isError, isFetching } = useQuery({

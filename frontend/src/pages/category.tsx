@@ -7,8 +7,8 @@ import Sidebar from '../components/Sidebar';
 
 function CategoryFeed() {
     const { slug } = useParams();
-    const [category, setCategory] = useState(null);
-    const [blogs, setBlogs] = useState([]);
+    const [category, setCategory] = useState<any>(null);
+    const [blogs, setBlogs] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const [page, setPage] = useState(1);

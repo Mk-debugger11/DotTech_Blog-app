@@ -123,8 +123,8 @@ const BlogPostForm = () => {
 
     const [title, setTitle] = useState('');
     const [thumbnail, setThumbnail] = useState('');
-    const [categoryIds, setCategoryIds] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const [categoryIds, setCategoryIds] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [isPublishing, setIsPublishing] = useState(false);
     const [isDrafting, setIsDrafting] = useState(false);
     const [hasContent, setHasContent] = useState(false);

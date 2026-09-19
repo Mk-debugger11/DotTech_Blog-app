@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import TopWriters from './TopWriters';
 
 const Sidebar = () => {
-  const [trendingStories, setTrendingStories] = useState([]);
+  const [trendingStories, setTrendingStories] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);

@@ -11,8 +11,8 @@ function BlogDetail() {
     const { jwt } = useAuthStore.getState();
     const isAuthenticated = !!jwt?.access;
     const currentUserId = isAuthenticated ? JSON.parse(atob(jwt.access.split('.')[1])).user_id : null;
-    const [blog, setBlogData] = useState(null);
-    const [comments, setComments] = useState([]);
+    const [blog, setBlogData] = useState<any>(null);
+    const [comments, setComments] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [newComment, setNewComment] = useState('');
     const [isSubmittingComment, setIsSubmittingComment] = useState(false);
@@ -59,7 +59,6 @@ function BlogDetail() {
     const handleLike = () => {
         if (!isAuthenticated) return navigate('/login');
         
-        // Optimistic update
         const wasLiked = blog.is_liked_by_user;
         setBlogData(prev => ({
             ...prev,
@@ -76,7 +75,6 @@ function BlogDetail() {
                 setBlogData(prev => ({ ...prev, likes_count: data.likes_count, is_liked_by_user: data.liked }));
             })
             .catch(() => {
-                // Revert
                 setBlogData(prev => ({
                     ...prev,
                     is_liked_by_user: wasLiked,
@@ -147,13 +145,13 @@ function BlogDetail() {
             .then(res => res.json())
             .then(() => {
                 setNewComment('');
-                fetchComments(); // Refresh comments list
+                fetchComments();
             })
             .catch(console.error)
             .finally(() => setIsSubmittingComment(false));
     };
 
-    const handleDeleteComment = (id) => {
+    const handleDeleteComment = (id: any) => {
         if (!window.confirm("Are you sure you want to delete this comment?")) return;
         
         FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/comments/${id}/`, {
@@ -215,12 +213,10 @@ function BlogDetail() {
         >
             <div className="max-w-[680px] mx-auto px-4 pt-12 md:pt-16">
                 
-                {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground leading-[1.2] mb-8">
                     {blog.title}
                 </h1>
 
-                {/* Author Block */}
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-border flex items-center justify-center text-lg font-medium text-secondary-text">
@@ -234,10 +230,9 @@ function BlogDetail() {
                                     Follow
                                 </button>
                             </div>
-                            {/* Categories */}
                             {blog.categories && blog.categories.length > 0 && (
                                 <div className="flex flex-wrap gap-2 mt-2">
-                                    {blog.categories.map(cat => (
+                                    {blog.categories.map((cat: any) => (
                                         <Link 
                                             key={cat.id} 
                                             to={`/category/${cat.slug}`}
@@ -257,7 +252,6 @@ function BlogDetail() {
                     </div>
                 </div>
 
-                {/* Action Bar (Top) */}
                 <div className="flex items-center justify-between py-3 border-y border-border mb-10 text-secondary-text">
                     <div className="flex items-center gap-6">
                         <button onClick={handleLike} className={`flex items-center gap-2 transition-colors group ${blog.is_liked_by_user ? 'text-accent-green' : 'hover:text-foreground'}`}>
@@ -290,7 +284,6 @@ function BlogDetail() {
                     </div>
                 </div>
 
-                {/* Hero Thumbnail */}
                 {blog.thumbnail && (
                     <div className="w-full mb-10 overflow-hidden rounded-2xl border border-border bg-surface">
                         <img 
@@ -302,7 +295,6 @@ function BlogDetail() {
                     </div>
                 )}
 
-                {/* Content */}
                 <div 
                     className="prose prose-lg dark:prose-invert max-w-none font-sans text-foreground leading-relaxed mb-16"
                     dangerouslySetInnerHTML={{ __html: blog.content }}
@@ -310,7 +302,6 @@ function BlogDetail() {
 
 
 
-                {/* Action Bar (Bottom) */}
                 <div className="flex items-center justify-between py-4 border-y border-border text-secondary-text mb-12">
                     <div className="flex items-center gap-6">
                         <button onClick={handleLike} className={`flex items-center gap-2 transition-colors group ${blog.is_liked_by_user ? 'text-accent-green' : 'hover:text-foreground'}`}>
@@ -335,11 +326,9 @@ function BlogDetail() {
                     </div>
                 </div>
 
-                {/* Comments Section */}
                 <section className="bg-surface rounded-xl p-6 border border-border">
                     <h3 className="text-xl font-bold font-sans text-foreground mb-6">Responses ({comments.length || 0})</h3>
                     
-                    {/* Add Comment Input */}
                     {isAuthenticated ? (
                         <div className="mb-10 bg-background p-4 rounded-lg border border-border shadow-sm">
                             <textarea 
@@ -366,7 +355,6 @@ function BlogDetail() {
                         </div>
                     )}
 
-                    {/* Comments List */}
                     <div className="space-y-8">
                         {comments.length > 0 ? comments.map((comment, index) => (
                             <div key={index} className="border-b border-border pb-6 last:border-0 last:pb-0">

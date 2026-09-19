@@ -25,7 +25,7 @@ function Navbar() {
     const [isDark, setIsDark] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchActive, setSearchActive] = useState(false);
-    const [userProfile, setUserProfile] = useState(null);
+    const [userProfile, setUserProfile] = useState<any>(null);
     const debouncedSearch = useDebounce(searchQuery, 300);
     const searchRef = useRef(null);
     const dropdownRef = useRef(null);

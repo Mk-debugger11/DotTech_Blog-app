@@ -8,8 +8,8 @@ import Sidebar from '../components/Sidebar';
 
 function Home() {
     const location = useLocation();
-    const [blogs, setBlogs] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const [blogs, setBlogs] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);

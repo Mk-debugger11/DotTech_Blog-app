@@ -1,9 +1,9 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-const authStore = (set) => ({
-    jwt: null,
-    setJwt: (key) => set(()=>({jwt: key})),
+const authStore = (set: any) => ({
+    jwt: null as any,
+    setJwt: (key: any) => set(()=>({jwt: key})),
 })
 
 const useAuthStore = create(

@@ -1,5 +1,5 @@
 import useAuthStore from "../store/store"
-async function FetchWithAuth(url, options = {}) {
+async function FetchWithAuth(url: string, options: any = {}) {
     const { jwt, setJwt } = useAuthStore.getState();
     const access = jwt?.access;
     const refresh = jwt?.refresh;
