@@ -52,7 +52,7 @@ function BlogDetail() {
     function fetchComments() {
         FetchWithAuth(`https://dottech-blog-app.onrender.com/blogs/${slug}/comments/`)
             .then((response) => response.json())
-            .then((data) => setComments(data))
+            .then((data) => setComments(data.results || data))
             .catch((err) => console.error("Failed to fetch comments:", err));
     }
 

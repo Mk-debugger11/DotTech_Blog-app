@@ -32,8 +32,10 @@ from django.db.models import Q
 class CategoryListAPIView(APIView):
     def get(self, request):
         categories = Category.objects.filter(is_active=True).order_by('name')
-        serializer = CategorySerializer(categories, many=True)
-        return response.Response(serializer.data)
+        paginator = StandardResultsSetPagination()
+        paginated_queryset = paginator.paginate_queryset(categories, request)
+        serializer = CategorySerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 class CategoryDetailAPIView(APIView):
     def get(self, request, slug):
@@ -140,9 +142,11 @@ class DetailBlogAPIView(APIView):
 class CommentsAPIView(APIView):
     def get(self, request , slug):
         post = get_object_or_404(BlogPost, slug = slug)
-        comments = Comments.objects.filter(post = post)
-        serializer = CommentSerializer(comments,many = True)
-        return response.Response(serializer.data)
+        comments = Comments.objects.filter(post = post).order_by('-created_at')
+        paginator = StandardResultsSetPagination()
+        paginated_queryset = paginator.paginate_queryset(comments, request)
+        serializer = CommentSerializer(paginated_queryset,many = True)
+        return paginator.get_paginated_response(serializer.data)
     
     def post(self, request ,slug):
         post = get_object_or_404(BlogPost, slug = slug)

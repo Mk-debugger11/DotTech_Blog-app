@@ -156,7 +156,7 @@ const BlogPostForm = () => {
         // Fetch categories
         fetch('https://dottech-blog-app.onrender.com/blogs/categories/')
             .then(res => res.json())
-            .then(data => setCategories(data))
+            .then(data => setCategories(data.results || data))
             .catch(console.error);
 
         if (editSlug) {
